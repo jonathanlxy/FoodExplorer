@@ -3,6 +3,7 @@ library(dplyr)
 library(dtplyr) # Make dplyr output as data.table
 library(data.table)
 library(DT)
+library(ggplot2)
 
 #### MISC ####
 aboutme <- readChar('Data/AboutMe.txt', nchars = 9999)
@@ -20,7 +21,7 @@ food <- fread('Data/Food_cleaned.csv') %>%
 # Translate kj to Calories
 food[, Energy_100g := round(Energy_100g/4.1858, 0)]
 # Round Sodium to integers
-food[, Sodium_100g := round(Sodium_100g, 0)]
+food[, Sodium_100g := round(Sodium_100g, 2)]
 
 # Separate this from food for better performance
 food_reactive <- reactive(food)

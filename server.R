@@ -85,6 +85,25 @@ shinyServer(function(input, output, session) {
                  'Link'))
   )
   
+  # 
+  plot <- reactive({
+    Xnutri <- input$map_plotX
+    Ynutri <- input$map_plotY
+    
+    plotdata <- food_reactive()[inRangeIndex(), 
+                               c(Xnutri, Ynutri, input$plan_RegionSelection),
+                               with = F] %>%
+      filter(.[,input$plan_RegionSelection] > 0)
+    
+    ggplot(data = plotdata, aes(x = get(Xnutri), y = get(Ynutri))) +
+      geom_point(color = '#2980B9') +
+      labs(x = Xnutri, y = Ynutri)
+  })
+  
+  # output$plot <- renderText(plot())
+  output$plot <- renderPlot(plot())
+    
+  
   ## Browsing Outputs ##
   
   output$plan_statVB <- renderUI(
