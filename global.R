@@ -22,6 +22,8 @@ food <- fread('Data/Food_cleaned.csv') %>%
 food[, Energy_100g := round(Energy_100g/4.1858, 0)]
 # Round Sodium to integers
 food[, Sodium_100g := round(Sodium_100g, 2)]
+# Transform Code into String
+food[, Code:=as.character(Code)]
 
 # Separate this from food for better performance
 food_reactive <- reactive(food)

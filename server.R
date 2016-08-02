@@ -39,7 +39,7 @@ shinyServer(function(input, output, session) {
   # Data with selected variables
   foodFilterDT <- reactive (
     food[, c('Product_name',
-             'Url',
+             'Url', 'Code',
              input$plan_CheckGroup,
              input$plan_RegionSelection),
          with = F] %>%
@@ -74,13 +74,13 @@ shinyServer(function(input, output, session) {
   displayDT <- reactive(
     # Filter datatable with filters
     foodFilterDT()[inRangeIndex(), # Filter index
-                   c('Product_name',
+                   c('Product_name', 'Code',
                      input$plan_CheckGroup), # Slider selection
                    with = F] %>%
       # Add Link buttons
       mutate(link = createLink(foodFilterDT()[inRangeIndex(), Url])) %>%
       # Truncate Names for display
-      setNames(c('Name',
+      setNames(c('Name', 'Code',
                  gsub('_100g', '', input$plan_CheckGroup),
                  'Link'))
   )
@@ -96,7 +96,7 @@ shinyServer(function(input, output, session) {
       filter(.[,input$plan_RegionSelection] > 0)
     
     ggplot(data = plotdata, aes(x = get(Xnutri), y = get(Ynutri))) +
-      geom_point(color = '#2980B9') +
+      geom_point(color = '#2980B9', alpha = 0.5) +
       labs(x = Xnutri, y = Ynutri)
   })
   
@@ -135,20 +135,13 @@ shinyServer(function(input, output, session) {
     displayDT(), 
     escape = F,
     options = list(autowidth = T,
+                   scrollX=TRUE,
                    columnDefs = list(
                      list(width = '10px',
                           className = 'dt-center',
                           targets = -1)
                    )
     ))
-  
-  
-  # Temp #
-  output$plan_dimcheck <- renderText(
-    dim(foodFilterDT() %>% filter(inRangeIndex()))
-  )
-
-  
 
   
   #################################################################
@@ -178,13 +171,13 @@ shinyServer(function(input, output, session) {
   
   # Subset foodfilterDT with current + new selected id
   summaryDT <- reactive({
-    food_reactive()[Url %in% summary_Url$Url, c('Product_name', nutritions), with = F] %>%
-      setNames(c('Name', gsub('_100g', '', nutritions)))
+    food_reactive()[Url %in% summary_Url$Url, c('Product_name', 'Code', nutritions), with = F] %>%
+      setNames(c('Name', 'Code', gsub('_100g', '', nutritions)))
   })
   
   # Selected items vs. FDA suggested DV
   summaryAvgDT <- reactive({
-    avg <- colMeans(summaryDT()[, -'Name', with = F], na.rm = T)
+    avg <- colMeans(summaryDT()[, -c('Name', 'Code'), with = F], na.rm = T)
     avgDT <- as.data.table(avg, keep.rownames = T) %>% rename(Nutrition = rn)
     summaryDT <- merge(avgDT, daily_nutritions, by = 'Nutrition') %>%
       mutate('%' = round(avg / DV, 2))
@@ -232,6 +225,7 @@ shinyServer(function(input, output, session) {
     summaryDT(),
     escape = F,
     options = list(autowidth = T,
+                   scrollX=TRUE,
                    columnDefs = list(
                      list(width = '10px',
                           className = 'dt-center',

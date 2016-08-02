@@ -147,7 +147,7 @@ tab_plan    <- tabItem(
                  inputId = "plan_CheckGroup", 
                  label = h3("Select Nutritions"),
                  choices = nutritions,
-                 selected = nutritions[1]
+                 selected = NULL
                )
         ), # End of Checkgroup
         
