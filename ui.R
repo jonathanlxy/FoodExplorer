@@ -159,14 +159,6 @@ tab_plan    <- tabItem(
                  )),
           column(1)
           
-          # column(1, actionButton(inputId = 'filter_reset', 
-          #                        label = NULL,
-          #                        icon('refresh'),
-          #                        style = "color: #fff; 
-          #        background-color: #337ab7; 
-          #        border-color: #2e6da4"
-          # ))
-          
         ), # End of Checkgroup
         helpText('("_100g" means "per 100 grams of food")'),
         # Sliders col 1
@@ -229,23 +221,6 @@ tab_plan    <- tabItem(
           dataTableOutput('summary_DT')))
     
 ) # End of Plan Tab
-
-#### Tabs - Summary ####
-# tab_summary <- tabItem(
-#   tabName = 'tab_summary',
-#   htmlOutput('summary_infoUI'),
-#   
-#   fluidRow(
-#     box(status = 'primary', solidHeader = T,
-#         collapsible = T, collapsed = T,
-#         title = 'Selection vs. DV - Detail', width = 12,
-#         dataTableOutput('summary_avgDT'))),
-# 
-#   fluidRow(
-#     box(status = 'primary', solidHeader = T,
-#         title = 'Detail', width = 12,
-#         dataTableOutput('summary_DT')))
-# ) # End of summary Tab
 
 #### Dashboard Body ####
 body <- dashboardBody(
