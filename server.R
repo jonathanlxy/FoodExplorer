@@ -36,10 +36,6 @@ shinyServer(function(input, output, session) {
   
   #### Food Browsing ####
   
-  # observeEvent(input$filter_reset, 
-  #              updateCheckboxGroupInput(session, 'plan_CheckGroup', selected = NULL)
-  # )
-  
   # Data with selected variables
   foodFilterDT <- reactive (
     food[, c('Product_name',
@@ -88,22 +84,7 @@ shinyServer(function(input, output, session) {
                  gsub('_100g', '', input$plan_CheckGroup),
                  'Link'))
   )
-  
-  # # 
-  # plot <- reactive({
-  #   Xnutri <- input$map_plotX
-  #   Ynutri <- input$map_plotY
-  #   
-  #   plotdata <- food_reactive()[inRangeIndex(), 
-  #                              c(Xnutri, Ynutri, input$plan_RegionSelection),
-  #                              with = F] %>%
-  #     filter(.[,input$plan_RegionSelection] > 0)
-  #   
-  #   ggplot(data = plotdata, aes(x = get(Xnutri), y = get(Ynutri))) +
-  #     geom_point(color = '#2980B9', alpha = 0.5) +
-  #     labs(x = Xnutri, y = Ynutri)
-  # })
-  # 
+
   plot <- reactive({
     Xnutri <- input$map_plotX
     
@@ -271,8 +252,6 @@ shinyServer(function(input, output, session) {
                    )
     )
   )
-  
-  
 })
 
 
